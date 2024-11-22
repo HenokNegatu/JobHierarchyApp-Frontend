@@ -164,7 +164,7 @@ export default function Positions() {
 
                             <Group className="mt-8 mb-4">
                                 <h3 className="text-lg font-semibold my-2">Employees</h3>
-                                <Button onClick={toggle}>view Tasks</Button>
+                                <Button variant="light" onClick={toggle}>View Assigned Tasks</Button>
                             </Group>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {position.employees.map((employee) => (
