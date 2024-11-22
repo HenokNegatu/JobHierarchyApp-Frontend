@@ -46,7 +46,7 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
     return (
         <div>
             <Button
-                className={`w-full text-black border-0 justify-start text-left font-normal ${level === 0 && "font-medium"}`}
+                className={`text-black border-0 justify-start text-left font-normal bg-transparent ${level === 0 && "font-medium"}`}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <div className="flex items-center">
@@ -58,7 +58,7 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
                     <Briefcase className="mr-2 h-4 w-4" />
                     <span>{position.name}</span>
                     <span className="ml-auto flex items-center text-muted-foreground">
-                        <Users className="mr-1 h-4 w-4" color='gray'/>
+                        <Users className="mr-1 h-4 w-4" color='gray' />
                         {position.employeeCount}
                     </span>
                 </div>

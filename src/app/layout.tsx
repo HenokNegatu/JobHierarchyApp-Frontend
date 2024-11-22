@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/charts/styles.css';
+import "./globals.css";
 import { ColorSchemeScript, createTheme, MantineProvider } from '@mantine/core';
 
 
