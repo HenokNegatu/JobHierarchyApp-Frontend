@@ -1,7 +1,7 @@
 import { Card, Text } from "@mantine/core"
 import { DonutChart } from '@mantine/charts';
 
-type TaskStatus = 'To Do' | 'In Progress' | 'Completed' | 'Discarded'
+type TaskStatus = 'Todo' | 'In Progress' | 'Completed' | 'Discarded'
 
 type Task = {
   id: string
