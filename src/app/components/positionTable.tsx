@@ -6,6 +6,11 @@ import { Trash } from "lucide-react";
 import { useState } from "react";
 import ModalComponent from "./modalComponent";
 import { useDisclosure } from "@mantine/hooks";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+
+dayjs.extend(relativeTime)
 
 export default function PositionTable({ position }: { position: Position }) {
     const [opened, { open, close }] = useDisclosure(false);
@@ -22,6 +27,10 @@ export default function PositionTable({ position }: { position: Position }) {
                   <ModalComponent opened={opened} close={close} action={action} position={selectedPosition}></ModalComponent>
 
             <DataTable
+            withTableBorder
+            withColumnBorders
+            striped
+            highlightOnHover
             columns={[{
                 accessor: 'name',
                 title: 'position',
@@ -43,7 +52,7 @@ export default function PositionTable({ position }: { position: Position }) {
                 title: <Box mr={6}>Row actions</Box>,
                 textAlign: 'right',
                 render: (childPosition) => (
-                    <Group gap={4} justify="right" wrap="nowrap">
+                    <Group gap={4} justify="start" wrap="nowrap">
                         <ActionIcon
                             size="sm"
                             variant="subtle"
@@ -72,7 +81,7 @@ export default function PositionTable({ position }: { position: Position }) {
                 ),
             }]}
             records={position.children}
-
+            noRecordsText="No records to show"
             rowExpansion={{
                 content: ({ record }) => (
                     <Stack className="details" p="xs" gap={6}>
@@ -84,6 +93,13 @@ export default function PositionTable({ position }: { position: Position }) {
                     </Stack>
                 ),
             }}
+            defaultColumnRender={(row, _, accessor) => {
+                const data = row[accessor as keyof typeof row];
+                if (accessor === 'createdAt' || accessor === 'modifiedAt') {
+                  return dayjs(data as string).fromNow();
+                }
+                return typeof data === 'string' ? data : JSON.stringify(data); 
+              }}
         />
         </div>
     )
