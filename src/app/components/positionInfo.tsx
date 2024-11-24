@@ -17,35 +17,12 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import PositionTable from './positionTable';
 import ModalComponent from './modalComponent';
-import { RequestType } from '../types';
+import { Employee, Position, RequestType, Task } from '../types';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime)
 
-type Task = {
-    title: string
-}
-
-type Employee = {
-    id: string
-    firstName: string
-    lastName: string
-    title: string
-    email: string
-    task: Task[]
-}
-
-type Position = {
-    id: string
-    name: string
-    description: string
-    employees: Employee[]
-    salary: string
-    createdAt: string
-    modifiedAt: string
-    children: Position[]
-}
 
 export const PositionSchema = z.object({
     id: z.string(),
@@ -72,11 +49,11 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
     const [selectedPosition, setPosition] = useState<Position>(position)
 
     const showModal = (actionType: RequestType, position: Position) => {
-        if(position.name === "CEO") {
+        if (position.name === "CEO") {
             notifications.show({
-                title: 'Delete Position',
-                message: 'Cannot Delete CEO Position! 🗑️',
-                color: 'red',
+                title: 'Warning',
+                message: 'Cannot delete CEO',
+                color: 'orange',
             });
             return
         }
@@ -217,7 +194,17 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                                                 <div>
                                                                     {
                                                                         employee.task.map((task: Task) => {
-                                                                            return <Text>{task.title}</Text>
+                                                                            return (
+                                                                                <div className="flex justify-around items-center p-2 mb-2 bg-gray-100 rounded mt-2">
+                                                                                    <Text>{task.title}</Text>
+                                                                                    <span className={`px-2 py-1 rounded-full text-sm ${task.status === 'Todo' ? 'bg-yellow-200 text-yellow-800' :
+                                                                                        task.status === 'In Progress' ?
+                                                                                            'bg-blue-200 text-blue-800' :
+                                                                                            'bg-green-200 text-green-800'
+                                                                                        }`}>
+                                                                                        {task.status}
+                                                                                    </span>
+                                                                                </div>)
                                                                         })
                                                                     }
                                                                 </div>

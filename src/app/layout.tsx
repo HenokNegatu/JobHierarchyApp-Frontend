@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/charts/styles.css';
+import '@mantine/notifications/styles.css';
 import "./globals.css";
 import { ColorSchemeScript, createTheme, MantineProvider } from '@mantine/core';
 import { ReduxProvider } from "./store/Provider";
@@ -56,7 +57,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReduxProvider>
         <MantineProvider>
-          <Notifications position="top-right"/>
+          <Notifications position="bottom-right"/>
           <MantineProvider theme={theme}>{children}</MantineProvider>
           </MantineProvider>
         </ReduxProvider>

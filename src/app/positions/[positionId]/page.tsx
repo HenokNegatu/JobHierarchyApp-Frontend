@@ -13,7 +13,7 @@ export default function Position({ params }: PositionsProp) {
     const { open } = useDrawer();
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full">
             <Button variant="light" onClick={open} className="self-end my-2 bg-transparent">
                 <PanelRight />
             </Button>
