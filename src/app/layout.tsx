@@ -5,7 +5,8 @@ import '@mantine/dates/styles.css';
 import '@mantine/charts/styles.css';
 import "./globals.css";
 import { ColorSchemeScript, createTheme, MantineProvider } from '@mantine/core';
-
+import { ReduxProvider } from "./store/Provider";
+import { Notifications } from "@mantine/notifications";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,18 +43,6 @@ export default function RootLayout({
         '#212121',
         '#121212',
         '#000000',
-      ],
-      lightBlack: [
-        "#FF5733", // Vibrant Orange *
-        "#33FF57", // Bright Green
-        "#3357FF", // Deep Blue
-        "#F5A623", // Warm Amber
-        "#8E44AD", // Rich Purple
-        "#2ECC71", // Fresh Mint
-        "#E74C3C", // Fiery Red
-        "#3498DB", // Sky Blue *
-        "#F1C40F", // Sunny Yellow
-        "#34495E", // Slate Gray
       ]
     },
     primaryColor: 'customBlack',
@@ -65,7 +54,12 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <ReduxProvider>
+        <MantineProvider>
+          <Notifications position="top-right"/>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+          </MantineProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

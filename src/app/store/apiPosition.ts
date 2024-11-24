@@ -9,6 +9,10 @@ export const positionAPI = createApi({
       query: () => 'positions',
       providesTags: ["positions"]
     }),
+    getPositionById: builder.query({
+      query: (id) => `positions/hierarchy/${id}`,
+      providesTags: ["positionsById"]
+    }),
     addPosition: builder.mutation({
       query: (newPosition) => ({
         url: `positions/`,
@@ -37,6 +41,7 @@ export const positionAPI = createApi({
 
 export const {
   useGetPositionQuery,
+  useGetPositionByIdQuery,
   useAddPositionMutation,
   useEditPositionMutation,
   useDeletePositionMutation,

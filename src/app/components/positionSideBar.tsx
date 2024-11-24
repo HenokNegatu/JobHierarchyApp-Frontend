@@ -1,46 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronRight, Users, Briefcase, Search, PlusCircle } from 'lucide-react'
+import { ChevronDown, ChevronRight, Briefcase, Search, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { Button, Input } from '@mantine/core'
+import { Position } from '../types'
 
-type Position = {
-    id: string
-    name: string
-    employeeCount: number
-    children?: Position[]
-}
 
-const initialPositions: Position[] = [
-    {
-        id: '1',
-        name: 'CEO',
-        employeeCount: 1,
-        children: [
-            {
-                id: '2',
-                name: 'CTO',
-                employeeCount: 5,
-                children: [
-                    { id: '4', name: 'Senior Developer', employeeCount: 3 },
-                    { id: '5', name: 'Junior Developer', employeeCount: 7 },
-                ],
-            },
-            {
-                id: '3',
-                name: 'CFO',
-                employeeCount: 3,
-                children: [
-                    { id: '6', name: 'Accountant', employeeCount: 2 },
-                    { id: '7', name: 'Financial Analyst', employeeCount: 4 },
-                ],
-            },
-        ],
-    },
-]
-
-const PositionItem = ({ position, level = 0 }: { position: Position; level?: number }) => {
+const PositionItem = ({ position, level = 0 }: { position: Position; level?: number}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -56,17 +23,13 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
                         <span className="w-4 mr-2"></span>
                     )}
                     <Briefcase className="mr-2 h-4 w-4" />
-                    <span>{position.name}</span>
-                    <span className="ml-auto flex items-center text-muted-foreground">
-                        <Users className="mr-1 h-4 w-4" color='gray' />
-                        {position.employeeCount}
-                    </span>
+                    <Link href={`/positions/${position.id}`}>{position.name}</Link>
                 </div>
             </Button>
             {isOpen && position.children && (
                 <div className={`ml-4" ${level > 0 && "border-l pl-4"}`}>
                     {position.children.map((child) => (
-                        <PositionItem key={child.id} position={child} level={level + 1} />
+                        <PositionItem key={child.id} position={child} level={level + 1}/>
                     ))}
                 </div>
             )}
@@ -74,15 +37,21 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
     )
 }
 
-export default function PositionSideBar() {
+type PositionSideBarProp = {
+    data: Position
+}
+
+export default function PositionSideBar({ data }: PositionSideBarProp) {
     const [showTasks, setShowTasks] = useState(false)
 
     return (
         <div className="py-4">
             <div className="px-4 mb-4">
-                <Button onClick={() => setShowTasks(!showTasks)} className="w-full mb-2">
-                    {showTasks ? "Show Job Positions" : "Show Tasks"}
-                </Button>
+                <Link href='/tasks'>
+                    <Button className="w-full mb-2">
+                        {showTasks ? "Show Job Positions" : "Show Tasks"}
+                    </Button>
+                </Link>
                 {showTasks && (
                     <div className="space-y-2">
                         <Link href="/tasks/create">
@@ -98,14 +67,14 @@ export default function PositionSideBar() {
                     </div>
                 )}
             </div>
-            {!showTasks && (
+            {
                 <>
                     <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Job Positions</h2>
-                    {initialPositions.map((position) => (
+                    {[data].map((position: Position) => (
                         <PositionItem key={position.id} position={position} />
                     ))}
                 </>
-            )}
+            }
         </div>
     )
 }
