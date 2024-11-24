@@ -16,7 +16,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import PositionTable from './positionTable';
-import { useDrawer } from '../lib/context/drawerContext';
+import ModalComponent from './modalComponent';
+import { RequestType } from '../types';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -66,7 +67,23 @@ type PositionInfoProps = {
 export default function PositionInfo({ positionId }: PositionInfoProps) {
     const { data: position, isLoading } = useGetPositionByIdQuery(positionId);
     const [opened, { toggle }] = useDisclosure(false);
-    
+    const [openedModal, { open, close }] = useDisclosure(false);
+    const [action, setAction] = useState(RequestType.POST)
+    const [selectedPosition, setPosition] = useState<Position>(position)
+
+    const showModal = (actionType: RequestType, position: Position) => {
+        if(position.name === "CEO") {
+            notifications.show({
+                title: 'Delete Position',
+                message: 'Cannot Delete CEO Position! 🗑️',
+                color: 'red',
+            });
+            return
+        }
+        setAction(actionType)
+        setPosition(position)
+        open()
+    }
 
     const [editPosition, { isLoading: isEditing, error: editError }] = useEditPositionMutation();
     const [editForm, setEditForm] = useState(false)
@@ -115,25 +132,27 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
 
     return (
         <div>
+
             {isLoading ? (<p>loading position</p>) : (
                 <div className='ml-14 mr-10 justify-self-center overflow-scroll'>
-                    
-                        <div className="text-2xl font-bold flex justify-between items-center">
-                            {position.name}
-                            <div>
-                                <Button variant="light" className="bg-transparent" size="icon" onClick={() => toggleEditForm()}>
-                                    <Edit className="h-4 w-4" />
-                                </Button>
-                                <Button variant="light" className="bg-transparent" size="icon">
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            </div>
+                    <ModalComponent opened={openedModal} close={close} action={action} position={position}></ModalComponent>
+
+                    <div className="text-2xl font-bold flex justify-between items-center">
+                        {position.name}
+                        <div>
+                            <Button variant="light" className="bg-transparent" size="icon" onClick={() => toggleEditForm()}>
+                                <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="light" className="bg-transparent" size="icon" onClick={() => showModal(RequestType.DELETE, position)}>
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
                         </div>
-                        <div><Text c="dimmed">{position.description}</Text></div>
-                        <div className="mt-4 text-sm text-muted-foreground flex justify-start gap-8">
-                            <p>Created: {dayjs(position.createdAt).fromNow()}</p>
-                            <p>Last modified: {dayjs(position.modifiedAt).fromNow()}</p>
-                        </div>
+                    </div>
+                    <div><Text c="dimmed">{position.description}</Text></div>
+                    <div className="mt-4 text-sm text-muted-foreground flex justify-start gap-8">
+                        <p>Created: {dayjs(position.createdAt).fromNow()}</p>
+                        <p>Last modified: {dayjs(position.modifiedAt).fromNow()}</p>
+                    </div>
 
                     <div>
                         {editForm ? (

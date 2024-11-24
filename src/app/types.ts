@@ -5,3 +5,10 @@ export type Position = {
     parent_id: string
     children?: Position[]
 }
+
+export enum RequestType {
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE",
+    GET = "GET"
+}
