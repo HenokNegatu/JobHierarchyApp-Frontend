@@ -1,15 +1,6 @@
 import { Card, Text } from "@mantine/core"
 import { DonutChart } from '@mantine/charts';
-
-type TaskStatus = 'Todo' | 'In Progress' | 'Completed' | 'Discarded'
-
-type Task = {
-  id: string
-  name: string
-  description: string
-  status: TaskStatus
-  assignedEmployees: any[]
-}
+import { Task } from "../types";
 
 type TaskSummaryProps = {
   tasks: Task[]
