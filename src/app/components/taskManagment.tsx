@@ -6,6 +6,7 @@ import { Button, TextInput, Text, Avatar, Group, Select } from '@mantine/core'
 import { Card } from '@mantine/core'
 import { useGetTaskQuery } from '../store/apiTask'
 import { Employee, Task } from '../types'
+import EmployeeManagment from './employeeManagement'
 
 
 
@@ -101,25 +102,7 @@ export const TaskManagement = () => {
                 <div className="space-y-8">
                         <TaskSummary tasks={tasks} />
                     <div className='grid grid-cols-2'>
-                        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5'>
-
-                            <div className='w-full flex gap-2 justify-center items-center'>
-                                <Button className="mb-4">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add Employee
-                                </Button>
-                                <TextInput
-                                    placeholder='Employee Name'
-                                    rightSection={icon}
-                                />
-                                <Select
-                                    placeholder='Job Position'
-                                />
-
-                            </div>
-                            <Text size='lg' fw="700" className='mt-5 mb-2'>Filter and view employees</Text>
-
-                        </Card>
+                        <EmployeeManagment />
                         <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5'>
                             <div className="w-full flex gap-2 justify-center items-center">
                                 <Button className="mb-4">

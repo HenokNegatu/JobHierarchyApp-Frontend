@@ -21,6 +21,7 @@ export type Employee = {
     title: string
     email: string
     task: Task[]
+    position: {name: string}
 }
 
 export type Position = {
