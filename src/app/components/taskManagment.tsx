@@ -4,19 +4,24 @@ import { Edit, Trash2, Plus, Filter, ClipboardX } from 'lucide-react'
 import { TaskSummary } from './taskSummary'
 import { Button, TextInput, Text, Avatar, Group, Select } from '@mantine/core'
 import { Card } from '@mantine/core'
-import { useGetTaskQuery } from '../store/apiTask'
+import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../store/apiTask'
 import { Employee, Task } from '../types'
 import EmployeeManagment from './employeeManagement'
+import { useRef } from 'react'
+import { useDrop } from 'react-dnd'
 
 
 
 
 
 type DraggableEmployeeProps = {
-    employee: Employee
+    employee: Employee,
+    taskId: string
 }
 
-const DraggableEmployee = ({ employee}: DraggableEmployeeProps) => {
+const DraggableEmployee = ({ employee, taskId}: DraggableEmployeeProps) => {
+
+    const [removeEmployeeFromTask] = useRemoveEmployeeFromTaskMutation();
 
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
@@ -28,7 +33,7 @@ const DraggableEmployee = ({ employee}: DraggableEmployeeProps) => {
             </Avatar>
             <span className="text-sm">{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</span>
             <Button variant="ghost" size="sm" className="ml-auto">
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" onClick={()=>removeEmployeeFromTask({taskId, employeeId: employee.id})}/>
             </Button>
         </div>
     )
@@ -39,16 +44,21 @@ type TaskItemProps = {
 }
 
 const TaskItem = ({ task }: TaskItemProps) => {
-    // const [{ isOver }, drop] = useDrop(() => ({
-    //     accept: 'employee',
-    //     drop: (item: { id: string }) => onAssignEmployee(task.id, item.id),
-    //     collect: (monitor) => ({
-    //         isOver: !!monitor.isOver(),
-    //     }),
-    // }))
+    const [assignEmployeeToTask] = useAssignEmployeeToTaskMutation();
+
+  
+    const [, dropRef] = useDrop(() => ({
+        accept: 'EMPLOYEE',
+        drop: async (item:Employee) => {
+          await assignEmployeeToTask({ taskId: task.id, employeeId: item.id });
+        },
+      }));
+  
+      const ref = useRef<HTMLDivElement>(null);
+      dropRef(ref);
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder className={`mb-4`}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder className={`mb-4`} ref={ref}>
             <div>
                 <div className="text-xl flex justify-between items-center">
                     {task.title}
@@ -78,6 +88,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
                     <DraggableEmployee
                         key={employee.id}
                         employee={employee}
+                        taskId ={task.id}
                     />
                 ))}
             </div>
@@ -103,7 +114,7 @@ export const TaskManagement = () => {
                         <TaskSummary tasks={tasks} />
                     <div className='grid grid-cols-2'>
                         <EmployeeManagment />
-                        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5'>
+                        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 overflow-y-scroll'>
                             <div className="w-full flex gap-2 justify-center items-center">
                                 <Button className="mb-4">
                                     <Plus className="mr-2 h-4 w-4" />

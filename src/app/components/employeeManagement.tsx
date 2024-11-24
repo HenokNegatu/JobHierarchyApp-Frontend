@@ -1,36 +1,52 @@
+'use client'
+
 import { Button, Card, Select, TextInput, Text, Collapse, Box, Group } from "@mantine/core";
 import { Filter, Plus, User } from "lucide-react";
 import { useGetEmployeeQuery } from "../store/apiEmployee";
 import { Employee, Task } from "../types";
 import { useDisclosure } from "@mantine/hooks";
+import { useDrag } from "react-dnd";
+import { useRef } from "react";
 
-const EmployeeBar = ({ employee }: { employee: Employee }) => {
+interface EmployeeProps {
+    employee: Employee;
+  }
+
+const EmployeeBar = ({ employee }: EmployeeProps) => {
     const [opened, { toggle }] = useDisclosure(false);
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
+    const [, drag] = useDrag(() => ({
+        type: 'EMPLOYEE',
+        item: { id: employee.id },
+      }));
+    
+      const ref = useRef<HTMLDivElement>(null);
+      drag(ref);
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <div ref={ref}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder >
            
-            <Box maw={400} mx="auto" className="w-full">
-                <Group className="flex justify-between" mb={5}>
-                    <User />
-                    <Text>{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</Text>
-                    <Text> {employee.position.name}</Text>
-                    <Button onClick={toggle}>Assigned Tasks</Button>
-                </Group>
+           <Box maw={400} mx="auto" className="w-full">
+               <Group className="flex justify-between" mb={5}>
+                   <User />
+                   <Text>{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</Text>
+                   <Text> {employee.position.name}</Text>
+                   <Button onClick={toggle}>Assigned Tasks</Button>
+               </Group>
 
-                <Collapse in={opened}>
-                    <Text c='dimmed'>Assigned Tasks:</Text>
-                    {employee.task.map((task: Task) => {
-                        return (
-                            <div className="bg-gray-100 rounded my-1">
-                                <Text>{`${capitalize(task.title)}`}</Text>
-                            </div>
-                        )
-                    })}
-                </Collapse>
-            </Box>
-        </Card>
+               <Collapse in={opened}>
+                   <Text c='dimmed'>Assigned Tasks:</Text>
+                   {employee.task.map((task: Task) => {
+                       return (
+                           <div className="bg-gray-100 rounded my-1" key={task.id}>
+                               <Text>{`${capitalize(task.title)}`}</Text>
+                           </div>
+                       )
+                   })}
+               </Collapse>
+           </Box>
+       </Card>
+        </div>
     )
 }
 
@@ -66,7 +82,7 @@ export default function EmployeeManagment() {
                     ) : (
                         <div>
                             {employees.map((employee: Employee) => {
-                                return <EmployeeBar employee={employee} />
+                                return <EmployeeBar employee={employee} key={employee.id}/>
                             })}
                         </div>
                     )

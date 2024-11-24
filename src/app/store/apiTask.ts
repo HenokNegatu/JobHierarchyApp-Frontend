@@ -8,7 +8,7 @@ export const taskAPI = createApi({
         getTask: builder.query({
             query: () => 'task',
             providesTags: ["tasks"]
-          }),
+        }),
         addTask: builder.mutation({
             query: (newTask) => ({
                 url: `task/`,
@@ -17,7 +17,23 @@ export const taskAPI = createApi({
             }),
             invalidatesTags: ["tasks"]
         }),
+        assignEmployeeToTask: builder.mutation({
+            query: ({ taskId, employeeId }) => ({
+                url: `/task/${taskId}/assign`,
+                method: 'POST',
+                body: { employeeId },
+            }),
+            invalidatesTags: ["tasks"]
+        }),
+        removeEmployeeFromTask: builder.mutation({
+            query: ({ taskId, employeeId }) => ({
+                url: `/task/${taskId}/remove`,
+                method: 'POST',
+                body: { employeeId },
+            }),
+            invalidatesTags: ["tasks"]
+        }),
     })
 })
 
-export const { useGetTaskQuery, useAddTaskMutation } = taskAPI;
+export const { useGetTaskQuery, useAddTaskMutation, useAssignEmployeeToTaskMutation, useRemoveEmployeeFromTaskMutation } = taskAPI;
