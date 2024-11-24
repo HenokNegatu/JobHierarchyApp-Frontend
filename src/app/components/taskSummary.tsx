@@ -21,7 +21,7 @@ export function TaskSummary({ tasks }: TaskSummaryProps) {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[15%_15%_15%_15%_30%] mx-5">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[15%_15%_15%_15%_30%] ml-5">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <Text className="text-sm font-medium">Total Tasks</Text>
@@ -54,16 +54,15 @@ export function TaskSummary({ tasks }: TaskSummaryProps) {
           <div className="text-2xl font-bold">{discardedTasks}</div>
         </div>
       </Card>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <Text className="text-sm font-medium">Task Distribution</Text>
-        </div>
-        <div>
+      <Card shadow="sm" padding="lg" radius="md" withBorder className="overflow-visible">
+        <div className="flex flex-row items-center justify-around space-y-0 pb-2">
+          <Text className="text-sm font-medium self-start">Task Distribution</Text>
           <DonutChart
             data={chartData}
-            className="h-32"
+            size={130} thickness={20}
           />
         </div>
+       
       </Card>
     </div>
   )
