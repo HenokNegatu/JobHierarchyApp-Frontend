@@ -173,10 +173,10 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                     <h3 className="text-lg font-semibold my-2">Employees</h3>
                                     <Button variant="light" onClick={toggle}>View Assigned Tasks</Button>
                                 </Group>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-20 max-h-[40vh] overflow-x-scroll">
                                     {position.employee.length > 0 ? (
                                         position.employee.map((employee: Employee) => (
-                                            <Card key={employee.id}>
+                                            <Card key={employee.id} className='md:w-[25vw] sm:w-full'>
                                                 <div className="flex items-center p-4">
                                                     <Avatar className="h-12 w-12 mr-4">
                                                     </Avatar>

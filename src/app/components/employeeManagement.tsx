@@ -23,7 +23,7 @@ const EmployeeBar = ({ employee }: EmployeeProps) => {
       const ref = useRef<HTMLDivElement>(null);
       drag(ref);
     return (
-        <div ref={ref}>
+        <div ref={ref} className="mb-5">
             <Card shadow="sm" padding="lg" radius="md" withBorder >
            
            <Box maw={400} mx="auto" className="w-full">
