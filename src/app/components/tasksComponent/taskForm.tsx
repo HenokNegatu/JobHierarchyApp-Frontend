@@ -66,7 +66,7 @@ export default function TaskForm({ action, task }: TaskFormProp) {
     const onSubmit: SubmitHandler<TaskSchemaType> = async (data) => {
         
         if (action === "POST") {
-            const { id, ...newTask } = { ...data, parent_id: task?.id };
+            const newTask = data;
             await addTask(newTask);
         }
         else {
