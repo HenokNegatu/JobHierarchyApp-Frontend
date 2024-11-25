@@ -18,6 +18,7 @@ import timezone from 'dayjs/plugin/timezone';
 import PositionTable from './positionTable';
 import ModalComponent from './modalComponent';
 import { Employee, Position, RequestType, Task } from '../types';
+import Link from 'next/link';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -49,7 +50,7 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
     const [selectedPosition, setPosition] = useState<Position>(position)
 
     const showModal = (actionType: RequestType, position: Position) => {
-        if (position.name === "CEO") {
+        if (position.name === "CEO" && (actionType === "PUT" || actionType === "DELETE")) {
             notifications.show({
                 title: 'Warning',
                 message: 'Cannot delete CEO',
@@ -222,12 +223,14 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                 </div>
                                 <div className="mt-4 flex justify-start gap-5">
 
-                                    <Button>
-                                        <UserPlus className="mr-2 h-4 w-4" />
-                                        Add Employee
-                                    </Button>
+                                    <Link href={`/employee/add/${position.id}`}>
+                                        <Button>
+                                            <UserPlus className="mr-2 h-4 w-4" />
+                                            Add Employee
+                                        </Button>
+                                    </Link>
 
-                                    <Button>
+                                    <Button onClick={() => showModal(RequestType.POST, position)}>
                                         <PlusCircle className="mr-2 h-4 w-4" />
                                         Add Child Position
                                     </Button>
