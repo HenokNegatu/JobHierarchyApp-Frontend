@@ -116,8 +116,8 @@ export const TaskManagement = () => {
                     <TaskSummary tasks={tasks} />
                     <div className='grid grid-cols-2'>
                         <EmployeeManagment />
-                        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 overflow-y-scroll'>
-                            <div className="w-full flex gap-2 justify-center items-center">
+                        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 h-[90vh]'>
+                            <div className="w-full flex gap-2 justify-center items-center h-fit">
                                 <Link href='/tasks/add'>
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
@@ -134,8 +134,7 @@ export const TaskManagement = () => {
 
                             </div>
                             <Text size='lg' fw="700" className='mt-5 mb-2'>Manage and assign tasks to employees</Text>
-                            <div>
-
+                            <div className='h-[80vh] overflow-y-scroll'>
                                 {tasks.map((task: Task) => (
                                     <TaskItem
                                         key={task.id}

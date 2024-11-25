@@ -72,7 +72,7 @@ export default function EmployeeManagment() {
     const icon = <Filter />;
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5'>
+        <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 h-[90vh]'>
 
             <div className='w-full flex gap-2 justify-center items-center'>
 
@@ -86,7 +86,7 @@ export default function EmployeeManagment() {
 
             </div>
             <Text size='lg' fw="700" className='mt-5 mb-2'>Filter and view employees</Text>
-            <div>
+            <div className='h-[80vh] overflow-y-scroll'>
                 {
                     isLoading ? (
                         <p>loading</p>
