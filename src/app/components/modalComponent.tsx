@@ -130,7 +130,7 @@ export default function ModalComponent({ action, opened, close, position }: { ac
                                 <TextInput placeholder="Position description" {...register("description")} error={errors.description?.message} />
                                 {(isAdding || isEditing) && <Loader size={30} />}
                                 <div>
-                                    <input type="submit" value={action === "PUT" ? "Edit" : "Add"} className={`${action === "POST" ? "bg-green-400" : "bg-blue-400"} rounded p-1 px-2 text-white`} />
+                                    <Button type="submit">{action === "PUT" ? "Edit" : "Add"}</Button>
                                 </div>
                             </form>
                         </>
