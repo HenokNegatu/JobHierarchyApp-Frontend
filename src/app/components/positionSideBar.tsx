@@ -23,7 +23,7 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
                         <span className="w-4 mr-2"></span>
                     )}
                     <Briefcase className="mr-2 h-4 w-4" />
-                    <Link href={`/positions/${position.id}`}>{position.name}</Link>
+                    <Link href={`/positions/${position.id}`} prefetch={true}>{position.name}</Link>
                 </div>
             </Button>
             {isOpen && position.children && (
@@ -47,25 +47,12 @@ export default function PositionSideBar({ data }: PositionSideBarProp) {
     return (
         <div className="py-4">
             <div className="px-4 mb-4">
-                <Link href='/tasks'>
+                <Link href='/tasks' prefetch={true}>
                     <Button className="w-full mb-2">
                         {showTasks ? "Show Job Positions" : "Show Tasks"}
                     </Button>
                 </Link>
-                {showTasks && (
-                    <div className="space-y-2">
-                        <Link href="/tasks/create">
-                            <Button variant="outline" className="w-full">
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                Create Task
-                            </Button>
-                        </Link>
-                        <div className="relative">
-                            <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
-                            <Input className="pl-8" placeholder="Search tasks..." />
-                        </div>
-                    </div>
-                )}
+
             </div>
             {
                 <>
