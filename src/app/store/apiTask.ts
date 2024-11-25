@@ -9,11 +9,29 @@ export const taskAPI = createApi({
             query: () => 'task',
             providesTags: ["tasks"]
         }),
+        getTaskById: builder.query({
+            query: (taskId) => `task/${taskId}`,
+        }),
         addTask: builder.mutation({
             query: (newTask) => ({
                 url: `task/`,
                 method: 'POST',
                 body: newTask,
+            }),
+            invalidatesTags: ["tasks"]
+        }),
+        editTask: builder.mutation({
+            query: (editedTask) => ({
+                url: `task/`,
+                method: 'PUT',
+                body: editedTask,
+            }),
+            invalidatesTags: ["tasks"]
+        }),
+        deleteTask: builder.mutation({
+            query: (taskId) => ({
+                url: `task/${taskId}`,
+                method: 'DELETE',
             }),
             invalidatesTags: ["tasks"]
         }),
@@ -36,4 +54,4 @@ export const taskAPI = createApi({
     })
 })
 
-export const { useGetTaskQuery, useAddTaskMutation, useAssignEmployeeToTaskMutation, useRemoveEmployeeFromTaskMutation } = taskAPI;
+export const { useGetTaskQuery, useGetTaskByIdQuery, useEditTaskMutation, useDeleteTaskMutation, useAddTaskMutation, useAssignEmployeeToTaskMutation, useRemoveEmployeeFromTaskMutation } = taskAPI;

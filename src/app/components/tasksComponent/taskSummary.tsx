@@ -1,6 +1,6 @@
 import { Card, Text } from "@mantine/core"
 import { DonutChart } from '@mantine/charts';
-import { Task } from "../types";
+import { Task } from "../../types";
 
 type TaskSummaryProps = {
   tasks: Task[]
@@ -10,7 +10,7 @@ export function TaskSummary({ tasks }: TaskSummaryProps) {
   const totalTasks = tasks.length
   const inProgressTasks = tasks.filter(task => task.status === 'In Progress').length
   const completedTasks = tasks.filter(task => task.status === 'Completed').length
-  const discardedTasks = tasks.filter(task => task.status === 'Discarded').length
+  const discardedTasks = tasks.filter(task => task.status === 'Cancelled').length
   const todoTasks = totalTasks - inProgressTasks - completedTasks - discardedTasks
 
   const chartData = [

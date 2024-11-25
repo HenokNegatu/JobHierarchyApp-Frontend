@@ -4,11 +4,12 @@ import { Edit, Trash2, Plus, Filter, ClipboardX } from 'lucide-react'
 import { TaskSummary } from './taskSummary'
 import { Button, TextInput, Text, Avatar, Group, Select } from '@mantine/core'
 import { Card } from '@mantine/core'
-import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../store/apiTask'
-import { Employee, Task } from '../types'
-import EmployeeManagment from './employeeManagement'
+import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../../store/apiTask'
+import { Employee, Task } from '../../types'
+import EmployeeManagment from '../employeeManagement'
 import { useRef } from 'react'
 import { useDrop } from 'react-dnd'
+import Link from 'next/link'
 
 
 
@@ -19,7 +20,7 @@ type DraggableEmployeeProps = {
     taskId: string
 }
 
-const DraggableEmployee = ({ employee, taskId}: DraggableEmployeeProps) => {
+const DraggableEmployee = ({ employee, taskId }: DraggableEmployeeProps) => {
 
     const [removeEmployeeFromTask] = useRemoveEmployeeFromTaskMutation();
 
@@ -33,7 +34,7 @@ const DraggableEmployee = ({ employee, taskId}: DraggableEmployeeProps) => {
             </Avatar>
             <span className="text-sm">{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</span>
             <Button variant="ghost" size="sm" className="ml-auto">
-                <Trash2 className="h-4 w-4" onClick={()=>removeEmployeeFromTask({taskId, employeeId: employee.id})}/>
+                <Trash2 className="h-4 w-4" onClick={() => removeEmployeeFromTask({ taskId, employeeId: employee.id })} />
             </Button>
         </div>
     )
@@ -46,16 +47,16 @@ type TaskItemProps = {
 const TaskItem = ({ task }: TaskItemProps) => {
     const [assignEmployeeToTask] = useAssignEmployeeToTaskMutation();
 
-  
+
     const [, dropRef] = useDrop(() => ({
         accept: 'EMPLOYEE',
-        drop: async (item:Employee) => {
-          await assignEmployeeToTask({ taskId: task.id, employeeId: item.id });
+        drop: async (item: Employee) => {
+            await assignEmployeeToTask({ taskId: task.id, employeeId: item.id });
         },
-      }));
-  
-      const ref = useRef<HTMLDivElement>(null);
-      dropRef(ref);
+    }));
+
+    const ref = useRef<HTMLDivElement>(null);
+    dropRef(ref);
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder className={`mb-4`} ref={ref}>
@@ -63,9 +64,10 @@ const TaskItem = ({ task }: TaskItemProps) => {
                 <div className="text-xl flex justify-between items-center">
                     {task.title}
                     <div>
-                        <Button variant="light" size="sm" className='bg-transparent'>
-                            <Edit className="h-4 w-4" />
-                        </Button>
+                        <Link href={`tasks/edit/${task.id}`} prefetch={true}>
+                            <Button variant="light" size="sm" className='bg-transparent'>
+                                <Edit className="h-4 w-4" />
+                            </Button></Link>
                         <Button variant="light" size="sm" className='bg-transparent' >
                             <Trash2 className="h-4 w-4" />
                         </Button>
@@ -88,7 +90,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
                     <DraggableEmployee
                         key={employee.id}
                         employee={employee}
-                        taskId ={task.id}
+                        taskId={task.id}
                     />
                 ))}
             </div>
@@ -111,15 +113,17 @@ export const TaskManagement = () => {
                 </div>
             ) : (
                 <div className="space-y-8">
-                        <TaskSummary tasks={tasks} />
+                    <TaskSummary tasks={tasks} />
                     <div className='grid grid-cols-2'>
                         <EmployeeManagment />
                         <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 overflow-y-scroll'>
                             <div className="w-full flex gap-2 justify-center items-center">
-                                <Button className="mb-4">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add Task
-                                </Button>
+                                <Link href='/tasks/add'>
+                                    <Button>
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Add Task
+                                    </Button>
+                                </Link>
                                 <TextInput
                                     placeholder='Task Name'
                                     rightSection={icon}
@@ -132,12 +136,12 @@ export const TaskManagement = () => {
                             <Text size='lg' fw="700" className='mt-5 mb-2'>Manage and assign tasks to employees</Text>
                             <div>
 
-                                {tasks.map((task:Task) => (
-                                <TaskItem
-                                    key={task.id}
-                                    task={task}
-                                />
-                            ))}
+                                {tasks.map((task: Task) => (
+                                    <TaskItem
+                                        key={task.id}
+                                        task={task}
+                                    />
+                                ))}
                             </div>
                         </Card>
                     </div>

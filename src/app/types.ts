@@ -5,12 +5,20 @@ export enum RequestType {
     DELETE = "DELETE",
     GET = "GET"
 }
+export enum TaskStatusType {
+    Todo = 'Todo',
+    InProgress = 'In Progress', 
+    Completed = 'Completed', 
+    Cancelled = 'Cancelled'
+  }
 
 export type Task = {
     id: string
     title: string
     description: string
-    status: 'Todo' | 'In Progress' | 'Completed' | 'Discarded'
+    dueDate: Date
+    isPriority: boolean
+    status: TaskStatusType
     employee: Employee[]
 }
 
