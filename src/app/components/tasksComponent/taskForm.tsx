@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { RequestType, Task, TaskStatusType } from "../../types";
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { notifications } from "@mantine/notifications";
 import { Loader, Text, TextInput, Button, Select, Switch, Fieldset } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { notifications } from "@mantine/notifications";
 
 type TaskFormProp = {
     action: RequestType
@@ -16,7 +16,6 @@ type TaskFormProp = {
 const taskStatusValues = Object.values(TaskStatusType);
 
 const TaskSchema = z.object({
-    id: z.string(),
     title: z.string().min(2),
     description: z
         .string()
@@ -65,17 +64,16 @@ export default function TaskForm({ action, task }: TaskFormProp) {
     }, [task, action])
 
     const onSubmit: SubmitHandler<TaskSchemaType> = async (data) => {
-        console.log("called")
+        
         if (action === "POST") {
             const { id, ...newTask } = { ...data, parent_id: task?.id };
             await addTask(newTask);
         }
         else {
-            const newTask = { ...data, id: task?.id };
-            await editTask({ id: newTask.id, updatedTask: newTask })
+            const editedTask = { ...data, id: task?.id };
+            await editTask({ taskId: editedTask.id, editedTask })
         }
         if (addError || editError) {
-            close()
             return notifications.show({
                 title: 'Error',
                 message: `Failed to ${addError ? "add" : "edit"} position. Please try again.`,
@@ -83,7 +81,6 @@ export default function TaskForm({ action, task }: TaskFormProp) {
             });
         }
         reset()
-        close()
         notifications.show({
             title: `${action === "POST" ? "Add" : "Edit"} Position`,
             message: `Position ${action === "POST" ? "added" : "edited"}! 🌟`,
