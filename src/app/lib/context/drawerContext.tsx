@@ -29,7 +29,7 @@ export const DrawerProvider = ({ children }: DrawerProviderProps) => {
     const [drawerOpened, { open, close }] = useDisclosure(false);
 
 
-    if (isLoading) return <div> <Loader /> Loading...</div>;
+    if (isLoading) return <div className='flex h-screen items-center justify-center'> <Loader size={22} color="rgba(0, 0, 0, 1)"/> We're testing your patience</div>;
     
 
     return (

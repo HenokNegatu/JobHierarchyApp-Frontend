@@ -1,9 +1,9 @@
-import { ClipboardX, Loader, PanelLeft, UserX2 } from 'lucide-react';
+import { ClipboardX, PanelLeft, UserX2 } from 'lucide-react';
 import { Edit, Trash2, UserPlus, PlusCircle } from 'lucide-react'
 import { Button, Avatar, TextInput, Text } from '@mantine/core'
 import { Card } from '@mantine/core'
 import { useState } from 'react'
-import { Collapse, Group } from "@mantine/core";
+import { Collapse, Group, Loader } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useEditPositionMutation, useGetPositionByIdQuery } from '../store/apiPosition';
 import { notifications } from "@mantine/notifications";
@@ -111,7 +111,10 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
     return (
         <div>
 
-            {isLoading ? (<p>loading position</p>) : (
+            {isLoading ? (
+                <div className='w-screen h-screen flex items-center justify-center'>
+                    <Loader size={22} color="rgba(0, 0, 0, 1)"></Loader> We're testing your patience
+                </div>) : (
                 <div className='ml-14 mr-10 justify-self-center overflow-scroll'>
                     <ModalComponent opened={openedModal} close={close} action={action} position={position}></ModalComponent>
 
@@ -163,7 +166,7 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                     disabled
                                 />
 
-                                {isEditing ? <Loader size={30} /> : (editForm && <Button type="submit">Edit</Button>)}
+                                {isEditing ? <Loader size={22} color="rgba(0, 0, 0, 1)" /> : (editForm && <Button type="submit">Edit</Button>)}
 
 
                             </form>
