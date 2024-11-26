@@ -7,7 +7,7 @@ import { Card } from '@mantine/core'
 import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../../store/apiTask'
 import { Employee, Task } from '../../types'
 import EmployeeManagment from '../employeeManagement'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import Link from 'next/link'
 
@@ -103,6 +103,15 @@ export const TaskManagement = () => {
     const { data: tasks, error, isLoading } = useGetTaskQuery({})
 
 
+    const [filterTitle, setFilterTitle] = useState('');
+    const [filterStatus, setFilterStatus] = useState('');
+
+    const filteredTasks = tasks?.filter((task: Task) => {
+        const matchesTitle = task.title.toLowerCase().includes(filterTitle.toLowerCase());
+        const matchesStatus = filterStatus ? task.status === filterStatus : true;
+        return matchesTitle && matchesStatus;
+    });
+
     const icon = <Filter />;
 
     return (
@@ -127,15 +136,20 @@ export const TaskManagement = () => {
                                 <TextInput
                                     placeholder='Task Name'
                                     rightSection={icon}
+                                    value={filterTitle}
+                                    onChange={(event) => setFilterTitle(event.currentTarget.value)}
                                 />
                                 <Select
                                     placeholder='Status'
+                                    value={filterStatus}
+                                    onChange={(_value, option) => setFilterStatus(option.value)}
+                                    data={['Todo', 'In Progress', 'Completed', 'Cancelled']}
                                 />
 
                             </div>
                             <Text size='lg' fw="700" className='mt-5 mb-2'>Manage and assign tasks to employees</Text>
                             <div className='h-[80vh] overflow-y-scroll'>
-                                {tasks.map((task: Task) => (
+                                {filteredTasks.map((task: Task) => (
                                     <TaskItem
                                         key={task.id}
                                         task={task}

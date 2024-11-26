@@ -6,7 +6,7 @@ import { useGetEmployeeQuery } from "../store/apiEmployee";
 import { Employee, Task } from "../types";
 import { useDisclosure } from "@mantine/hooks";
 import { useDrag } from "react-dnd";
-import { useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 interface EmployeeProps {
@@ -69,6 +69,20 @@ export default function EmployeeManagment() {
 
     const { data: employees, error, isLoading } = useGetEmployeeQuery({})
 
+    const [filterName, setFilterName] = useState('');
+    const [filterPosition, setFilterPosition] = useState('');
+
+    const positions = useMemo(() => {
+        const allPositions = employees?.map((employee: Employee) => employee.position.name) || [];
+        return [...new Set(allPositions)]; // Remove duplicates
+    }, [employees]);
+
+    const filteredEmployees = employees?.filter((employee: Employee) => {
+        const matchesName = employee.firstName.toLowerCase().includes(filterName.toLowerCase());
+        const matchesPosition = filterPosition ? employee.position.name === filterPosition : true;
+        return matchesName && matchesPosition;
+    });
+
     const icon = <Filter />;
 
     return (
@@ -79,9 +93,14 @@ export default function EmployeeManagment() {
                 <TextInput
                     placeholder='Employee Name'
                     rightSection={icon}
+                    value={filterName}
+                    onChange={(e) => setFilterName(e.currentTarget.value)}
                 />
                 <Select
                     placeholder='Job Position'
+                    value={filterPosition}
+                    onChange={(_value, option) => setFilterPosition(option.value)}
+                    data={positions}
                 />
 
             </div>
@@ -92,7 +111,7 @@ export default function EmployeeManagment() {
                         <p>loading</p>
                     ) : (
                         <div>
-                            {employees.map((employee: Employee) => {
+                            {filteredEmployees.map((employee: Employee) => {
                                 return <EmployeeBar employee={employee} key={employee.id} />
                             })}
                         </div>
