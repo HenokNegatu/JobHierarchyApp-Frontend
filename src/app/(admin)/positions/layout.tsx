@@ -1,9 +1,9 @@
 'use client'
 
-import PositionSideBar from "../components/positionSideBar";
+import PositionSideBar from "../../components/positionSideBar";
 import { Drawer, Loader } from "@mantine/core";
-import { useGetPositionQuery } from "../store/apiPosition";
-import { DrawerProvider, useDrawer } from "../lib/context/drawerContext";
+import { useGetPositionQuery } from "../../store/apiPosition";
+import { DrawerProvider, useDrawer } from "../../lib/context/drawerContext";
 
 export default function PositionsLayout({
     children, 

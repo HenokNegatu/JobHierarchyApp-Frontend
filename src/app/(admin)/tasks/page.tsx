@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { TaskManagement } from '../components/tasksComponent/taskManagment'
+import { TaskManagement } from '../../components/tasksComponent/taskManagment'
 import { Button } from '@mantine/core'
 
 export default function TasksPage() {
