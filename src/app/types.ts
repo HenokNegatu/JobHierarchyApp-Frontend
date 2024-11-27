@@ -30,6 +30,17 @@ export type Employee = {
     email: string
     task: Task[]
     position: {name: string}
+    phoneNumber: string
+    dateOfBirth?: Date
+    hireDate: Date
+    salary?: number
+    status: StatusType
+    address?: string
+    gender: GenderType
+    maritalStatus?: MaritalStatusType;
+    emergencyContactName?: string;
+    emergencyContactNumber?: string;
+    nationalId?: string;
 }
 
 export type Position = {
@@ -43,3 +54,26 @@ export type Position = {
     parent_id: string
     children: Position[]
 }
+
+export enum StatusType {
+    Active = "Active",
+    Inactive = "Inactive",
+    OnLeave = "On Leave"
+}
+
+export enum GenderType {
+    Male = "Male",
+    Female = "Female"
+}
+
+export enum MaritalStatusType {
+    Single = "Single",
+    Married = "Married",
+    Divorced = "Divorced",
+    Widowed = "Widowed"
+}
+
+export enum Role {
+    Admin = "admin",
+    NonAdmin = 'non-admin'
+  }
