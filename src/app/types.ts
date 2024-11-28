@@ -20,6 +20,8 @@ export type Task = {
     isPriority: boolean
     status: TaskStatusType
     employee: Employee[]
+    createdAt: Date
+    modifiedAt: Date
 }
 
 export type Employee = {
