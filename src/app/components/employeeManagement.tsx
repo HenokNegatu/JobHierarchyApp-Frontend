@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, Card, Select, TextInput, Text, Collapse, Box, Group } from "@mantine/core";
-import { Edit, Filter, Plus, Trash2, User } from "lucide-react";
+import { Edit, Filter, Plus, Trash2, User, Users } from "lucide-react";
 import { useGetEmployeeQuery } from "../store/apiEmployee";
 import { Employee, Task } from "../types";
 import { useDisclosure } from "@mantine/hooks";
@@ -52,8 +52,13 @@ const EmployeeBar = ({ employee }: EmployeeProps) => {
                         <Text c='dimmed'>Assigned Tasks:</Text>
                         {employee.task.map((task: Task) => {
                             return (
-                                <div className="bg-gray-100 rounded my-1" key={task.id}>
+                                <div className="bg-gray-100 rounded my-1 flex justify-between px-2" key={task.id}>
                                     <Text>{`${capitalize(task.title)}`}</Text>
+                                    <Text className={`font-medium py-1 rounded-full text-xs ${task.status === 'Todo' ? ' text-yellow-800' :
+                                        task.status === 'In Progress' ?
+                                            ' text-blue-800' : task.status === 'Completed' ?
+                                                ' text-green-800' : ' text-red-800'
+                                        }`}>{task.status}</Text>
                                 </div>
                             )
                         })}
@@ -74,8 +79,14 @@ export default function EmployeeManagment() {
 
     const positions = useMemo(() => {
         const allPositions = employees?.map((employee: Employee) => employee.position.name) || [];
-        return [...new Set(allPositions)]; // Remove duplicates
+        const uniquePositions = Array.from(new Set(allPositions));
+        uniquePositions.map((position) => ({
+            value: position,
+            label: position,
+        })); 
+        return [{ value: '', label: 'All' }, ...uniquePositions];
     }, [employees]);
+    
 
     const filteredEmployees = employees?.filter((employee: Employee) => {
         const matchesName = employee.firstName.toLowerCase().includes(filterName.toLowerCase());
@@ -88,8 +99,19 @@ export default function EmployeeManagment() {
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 h-[90vh]'>
 
-            <div className='w-full flex gap-2 justify-center items-center'>
+            <div className='w-full flex gap-2 justify-evenly  items-center '>
 
+            {isLoading ? (
+                <div>
+                    loading...
+                </div>
+            ) : (
+                <div className="flex gap-1 items-center ">
+                    <Users /><Text size="lg">{filteredEmployees.length}</Text>
+                </div>
+            )}
+
+                <div className="flex gap-2">
                 <TextInput
                     placeholder='Employee Name'
                     rightSection={icon}
@@ -102,6 +124,7 @@ export default function EmployeeManagment() {
                     onChange={(_value, option) => setFilterPosition(option.value)}
                     data={positions}
                 />
+                </div>
 
             </div>
             <Text size='lg' fw="700" className='mt-5 mb-2'>Filter and view employees</Text>
