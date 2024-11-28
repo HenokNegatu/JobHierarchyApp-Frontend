@@ -14,8 +14,8 @@ export function TaskSummary({ tasks }: TaskSummaryProps) {
   const todoTasks = totalTasks - inProgressTasks - completedTasks - discardedTasks
 
   const chartData = [
-    { name: 'To Do', value: todoTasks, color: 'indigo.6' },
-    { name: 'In Progress', value: inProgressTasks, color: 'yellow.6' },
+    { name: 'To Do', value: todoTasks, color: 'yellow.6' },
+    { name: 'In Progress', value: inProgressTasks, color: 'indigo.6' },
     { name: 'Completed', value: completedTasks, color: 'teal.6' },
     { name: 'Discarded', value: discardedTasks, color: 'red.6' },
   ]

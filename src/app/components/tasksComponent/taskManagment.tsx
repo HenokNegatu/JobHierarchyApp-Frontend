@@ -10,9 +10,17 @@ import EmployeeManagment from '../employeeManagement'
 import { useRef, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import Link from 'next/link'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import { useDisclosure } from '@mantine/hooks'
+import DeleteTaskModal from './deleteTaskModal'
 
 
-
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(relativeTime)
 
 
 type DraggableEmployeeProps = {
@@ -58,8 +66,19 @@ const TaskItem = ({ task }: TaskItemProps) => {
     const ref = useRef<HTMLDivElement>(null);
     dropRef(ref);
 
+    const [opened, { open, close }] = useDisclosure(false);
+    const [selectedTask, setTask] = useState({taskId: '', taskTitle: ''})
+
+    const showModal = (taskId: string, taskTitle: string) => {
+
+        setTask({taskId, taskTitle})
+        open()
+    }
+
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder className={`mb-4`} ref={ref}>
+            <DeleteTaskModal opened={opened} close={close}  taskId={selectedTask.taskId} taskTitle={selectedTask.taskTitle} />
+
             <div>
                 <div className="text-xl flex justify-between items-center">
                     {task.title}
@@ -69,7 +88,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
                                 <Edit className="h-4 w-4" />
                             </Button></Link>
                         <Button variant="light" size="sm" className='bg-transparent' >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4" onClick={() => showModal(task.id, task.title)} />
                         </Button>
                     </div>
                 </div>
@@ -79,11 +98,15 @@ const TaskItem = ({ task }: TaskItemProps) => {
                 <div className="mb-2">
                     <span className={`px-2 py-1 rounded-full text-sm ${task.status === 'Todo' ? 'bg-yellow-200 text-yellow-800' :
                         task.status === 'In Progress' ?
-                            'bg-blue-200 text-blue-800' :
-                            'bg-green-200 text-green-800'
+                            'bg-blue-200 text-blue-800' : task.status === 'Completed' ?
+                                'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
                         }`}>
                         {task.status}
                     </span>
+                </div>
+                <div className='flex justify-between'>
+                    <Text size='sm' c="dimmed">Created: {dayjs(task.createdAt).fromNow()}</Text>
+                    <Text size='sm' c="dimmed">last Modified: {dayjs(task.modifiedAt).fromNow()}</Text>
                 </div>
                 <h4 className="font-semibold mb-2">Assigned Employees:</h4>
                 {task.employee.map((employee: Employee) => (
@@ -97,6 +120,8 @@ const TaskItem = ({ task }: TaskItemProps) => {
         </Card>
     )
 }
+
+
 
 export const TaskManagement = () => {
 
@@ -142,9 +167,14 @@ export const TaskManagement = () => {
                                 <Select
                                     placeholder='Status'
                                     value={filterStatus}
-                                    onChange={(_value, option) => setFilterStatus(option.value)}
-                                    data={['Todo', 'In Progress', 'Completed', 'Cancelled']}
-                                />
+                                    onChange={(_value, option) => setFilterStatus(option.value )}
+                                    data={[
+                                        { value: "Todo", label: "Todo" },
+                                        { value: "InProgress", label: "InProgress" },
+                                        { value: "Completed", label: "Completed" },
+                                        { value: "Cancelled", label: "Cancelled" },
+                                        { value: "", label: 'All' }, // Adjust label for clarity
+                                    ]}                                />
 
                             </div>
                             <Text size='lg' fw="700" className='mt-5 mb-2'>Manage and assign tasks to employees</Text>
