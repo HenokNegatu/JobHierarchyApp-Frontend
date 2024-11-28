@@ -1,8 +1,8 @@
 'use client'
 
-import { Edit, Trash2, Plus, Filter, ClipboardX } from 'lucide-react'
+import { Edit, Trash2, Plus, Filter, Clipboard, Badge, AlertCircle, } from 'lucide-react'
 import { TaskSummary } from './taskSummary'
-import { Button, TextInput, Text, Avatar, Group, Select } from '@mantine/core'
+import { Button, TextInput, Text, Avatar, Group, Select, Switch } from '@mantine/core'
 import { Card } from '@mantine/core'
 import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../../store/apiTask'
 import { Employee, Task } from '../../types'
@@ -67,21 +67,30 @@ const TaskItem = ({ task }: TaskItemProps) => {
     dropRef(ref);
 
     const [opened, { open, close }] = useDisclosure(false);
-    const [selectedTask, setTask] = useState({taskId: '', taskTitle: ''})
+    const [selectedTask, setTask] = useState({ taskId: '', taskTitle: '' })
 
     const showModal = (taskId: string, taskTitle: string) => {
 
-        setTask({taskId, taskTitle})
+        setTask({ taskId, taskTitle })
         open()
     }
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder className={`mb-4`} ref={ref}>
-            <DeleteTaskModal opened={opened} close={close}  taskId={selectedTask.taskId} taskTitle={selectedTask.taskTitle} />
+            <DeleteTaskModal opened={opened} close={close} taskId={selectedTask.taskId} taskTitle={selectedTask.taskTitle} />
 
             <div>
                 <div className="text-xl flex justify-between items-center">
-                    {task.title}
+                    <div className="flex gap-2">
+                        {task.title}
+                        {task.isPriority && (
+                            <span className={`flex items-center gap-1 px-1 rounded-full text-xs bg-red-200 text-red-800
+                }`}>
+                                <AlertCircle className="h-3 w-3" />
+                                Priority
+                            </span>
+                        )}
+                    </div>
                     <div>
                         <Link href={`tasks/edit/${task.id}`} prefetch={true}>
                             <Button variant="light" size="sm" className='bg-transparent'>
@@ -130,11 +139,13 @@ export const TaskManagement = () => {
 
     const [filterTitle, setFilterTitle] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
+    const [filterPriority, setFilterPriority] = useState(false)
 
     const filteredTasks = tasks?.filter((task: Task) => {
         const matchesTitle = task.title.toLowerCase().includes(filterTitle.toLowerCase());
         const matchesStatus = filterStatus ? task.status === filterStatus : true;
-        return matchesTitle && matchesStatus;
+        const matchesPriority = filterPriority ? task.isPriority === filterPriority : true;
+        return matchesTitle && matchesStatus && matchesPriority;
     });
 
     const icon = <Filter />;
@@ -167,15 +178,19 @@ export const TaskManagement = () => {
                                 <Select
                                     placeholder='Status'
                                     value={filterStatus}
-                                    onChange={(_value, option) => setFilterStatus(option.value )}
+                                    onChange={(_value, option) => setFilterStatus(option.value)}
                                     data={[
                                         { value: "Todo", label: "Todo" },
                                         { value: "InProgress", label: "InProgress" },
                                         { value: "Completed", label: "Completed" },
                                         { value: "Cancelled", label: "Cancelled" },
-                                        { value: "", label: 'All' }, // Adjust label for clarity
-                                    ]}                                />
-
+                                        { value: "", label: 'All' }, 
+                                    ]} />
+                                <Switch
+                                    checked={filterPriority}
+                                    onChange={(e) => setFilterPriority(e.currentTarget.checked)}
+                                    label="Prior"
+                                />
                             </div>
                             <Text size='lg' fw="700" className='mt-5 mb-2'>Manage and assign tasks to employees</Text>
                             <div className='h-[80vh] overflow-y-scroll'>
