@@ -154,7 +154,7 @@ export default function TaskSection({ tasks }: { tasks: Task[] }) {
                     onChange={(_value, option) => setFilterStatus(option.value)}
                     data={[
                         { value: "Todo", label: "Todo" },
-                        { value: "InProgress", label: "InProgress" },
+                        { value: "In Progress", label: "InProgress" },
                         { value: "Completed", label: "Completed" },
                         { value: "Cancelled", label: "Cancelled" },
                         { value: "", label: 'All' }
