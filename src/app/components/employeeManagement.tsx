@@ -3,7 +3,7 @@
 import { Button, Card, Select, TextInput, Text, Collapse, Box, Group } from "@mantine/core";
 import { Edit, Filter, Plus, Trash2, User, Users } from "lucide-react";
 import { useGetEmployeeQuery } from "../store/apiEmployee";
-import { Employee, Task } from "../types";
+import { Employee, StatusType, Task } from "../types";
 import { useDisclosure } from "@mantine/hooks";
 import { useDrag } from "react-dnd";
 import { useMemo, useRef, useState } from "react";
@@ -23,6 +23,19 @@ const EmployeeBar = ({ employee }: EmployeeProps) => {
 
     const ref = useRef<HTMLDivElement>(null);
     drag(ref);
+
+    const getStatusColor = (status: StatusType) => {
+        switch (status) {
+            case StatusType.Active:
+                return 'bg-green-500'
+            case StatusType.Inactive:
+                return 'bg-red-500'
+            case StatusType.OnLeave:
+                return 'bg-yellow-500'
+            default:
+                return 'bg-gray-500'
+        }
+    }
     return (
         <div ref={ref} className="mb-5">
             <Card shadow="sm" padding="lg" radius="md" withBorder >
@@ -33,11 +46,16 @@ const EmployeeBar = ({ employee }: EmployeeProps) => {
                         <div className="flex justify-self-start">
                             <User />
                             <Text>{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</Text>
+                        <div
+                                    className={`h-2.5 w-2.5 rounded-full ${getStatusColor(
+                                        employee.status
+                                    )}`}
+                                />
                         </div>
                         <Text> {employee.position.name}</Text>
                         <Button onClick={toggle}>Assigned Tasks</Button>
                         <div>
-                            <Link href={`employee/edit/${employee.id}`}>
+                            <Link href={`employee/edit/${employee.id}`} prefetch={true}>
                                 <Button variant="light" size="sm" className='bg-transparent'>
                                     <Edit className="h-4 w-4" />
                                 </Button></Link>

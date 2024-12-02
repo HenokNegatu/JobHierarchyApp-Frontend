@@ -73,17 +73,41 @@ export default function TaskForm({ action, task }: TaskFormProp) {
             const editedTask = { ...data, id: task?.id };
             await editTask({ taskId: editedTask.id, editedTask })
         }
-        if (addError || editError) {
+        if (addError) {
+            let errorMsg = 'An unknown error occurred'
+
+            if ('status' in addError) {
+                if (addError?.status === 409) {
+                    errorMsg = "Task with this title already exists.";
+                }
+            }
+            console.error(errorMsg)
             return notifications.show({
                 title: 'Error',
-                message: `Failed to ${addError ? "add" : "edit"} position. Please try again.`,
+                message: `${errorMsg} Please try again.`,
+                color: 'red',
+            });
+        }
+
+        if (editError) {
+            let errorMsg = 'An unknown error occurred'
+
+            if ('status' in editError) {
+                if (editError?.status === 409 ) {
+                    errorMsg = "Task with this title already exists.";
+                }
+            }
+            console.log(errorMsg)
+            return notifications.show({
+                title: 'Error',
+                message: `${errorMsg} Please try again.`,
                 color: 'red',
             });
         }
         reset()
         notifications.show({
-            title: `${action === "POST" ? "Add" : "Edit"} Position`,
-            message: `Position ${action === "POST" ? "added" : "edited"}! 🌟`,
+            title: `${action === "POST" ? "Add" : "Edit"} Task`,
+            message: `Task ${action === "POST" ? "added" : "edited"}! 🌟`,
         })
     };
 

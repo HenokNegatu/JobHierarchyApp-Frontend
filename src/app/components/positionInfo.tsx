@@ -17,7 +17,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import PositionTable from './positionTable';
 import ModalComponent from './modalComponent';
-import { Employee, Position, RequestType, Task } from '../types';
+import { Employee, Position, RequestType, StatusType, Task } from '../types';
 import Link from 'next/link';
 
 dayjs.extend(utc);
@@ -107,6 +107,18 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
 
 
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    const getStatusColor = (status: StatusType) => {
+        switch (status) {
+            case StatusType.Active:
+                return 'bg-green-500'
+            case StatusType.Inactive:
+                return 'bg-red-500'
+            case StatusType.OnLeave:
+                return 'bg-yellow-500'
+            default:
+                return 'bg-gray-500'
+        }
+    }
 
     return (
         <div>
@@ -185,7 +197,14 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                                     <Avatar className="h-12 w-12 mr-4">
                                                     </Avatar>
                                                     <div>
-                                                        <h4 className="font-semibold">{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</h4>
+                                                        <div className='flex'>
+                                                            <h4 className="font-semibold">{`${capitalize(employee.firstName)} ${capitalize(employee.lastName)}`}</h4>
+                                                        <div
+                                                            className={`h-2.5 w-2.5 rounded-full ${getStatusColor(
+                                                                employee.status
+                                                            )}`}
+                                                        />
+                                                        </div>
                                                         <p className="text-sm text-muted-foreground">{employee.title}</p>
                                                         <p className="text-sm text-muted-foreground">{employee.email}</p>
                                                         <Collapse in={opened}>
@@ -226,7 +245,7 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                 </div>
                                 <div className="mt-4 flex justify-start gap-5">
 
-                                    <Link href={`/employee/add/${position.id}`}>
+                                    <Link href={`/admin/employee/add/${position.id}`}>
                                         <Button>
                                             <UserPlus className="mr-2 h-4 w-4" />
                                             Add Employee

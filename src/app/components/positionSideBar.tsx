@@ -23,7 +23,7 @@ const PositionItem = ({ position, level = 0 }: { position: Position; level?: num
                         <span className="w-4 mr-2"></span>
                     )}
                     <Briefcase className="mr-2 h-4 w-4" />
-                    <Link href={`/positions/${position.id}`} prefetch={true}>{position.name}</Link>
+                    <Link href={`/admin/positions/${position.id}`} prefetch={true}>{position.name}</Link>
                 </div>
             </Button>
             {isOpen && position.children && (
@@ -47,7 +47,7 @@ export default function PositionSideBar({ data }: PositionSideBarProp) {
     return (
         <div className="py-4">
             <div className="px-4 mb-4">
-                <Link href='/tasks' prefetch={true}>
+                <Link href='/admin/tasks' prefetch={true}>
                     <Button className="w-full mb-2">
                         {showTasks ? "Show Job Positions" : "Show Tasks"}
                     </Button>

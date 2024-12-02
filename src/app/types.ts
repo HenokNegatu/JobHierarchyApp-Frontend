@@ -31,7 +31,7 @@ export type Employee = {
     title: string
     email: string
     task: Task[]
-    position: {name: string}
+    position: {name: string, id: string}
     phoneNumber: string
     dateOfBirth?: Date
     hireDate: Date
@@ -39,10 +39,12 @@ export type Employee = {
     status: StatusType
     address?: string
     gender: GenderType
-    maritalStatus?: MaritalStatusType;
-    emergencyContactName?: string;
-    emergencyContactNumber?: string;
-    nationalId?: string;
+    maritalStatus?: MaritalStatusType
+    emergencyContactName?: string
+    emergencyContactNumber?: string
+    profilePictureUrl?: string
+    nationalId?: string
+    role: Role
 }
 
 export type Position = {
