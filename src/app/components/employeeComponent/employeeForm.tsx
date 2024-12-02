@@ -1,5 +1,5 @@
-import { useAddEmployeeMutation } from '@/app/store/apiEmployee';
-import { GenderType, MaritalStatusType, RequestType, Role } from '@/app/types';
+import { employeeAPI, useAddEmployeeMutation, useEditEmployeeMutation } from '@/app/store/apiEmployee';
+import { Employee, GenderType, MaritalStatusType, RequestType, Role, StatusType } from '@/app/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Fieldset, Loader, NumberInput, Select, TextInput } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
@@ -7,6 +7,7 @@ import { notifications } from '@mantine/notifications';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import z from 'zod'
 import PhoneNumber from './phone-input';
+import { useEffect } from 'react';
 
 
 
@@ -17,7 +18,7 @@ const EmployeeSchema = z.object({
     phoneNumber: z.string().min(1, 'Phone number is required'),
     dateOfBirth: z.date().optional(),
     hireDate: z.date(),
-    salary: z.number().nullable(),
+    salary: z.number().optional(),
     address: z.string().optional(),
     gender: z.nativeEnum(GenderType),
     maritalStatus: z.nativeEnum(MaritalStatusType).optional(),
@@ -31,13 +32,13 @@ const EmployeeSchema = z.object({
 
 type EmployeeSchemaType = z.infer<typeof EmployeeSchema>;
 
+type EmployeeFormProp = { positionId?: string, action: RequestType, employee?: Employee }
 
-export default function EmployeeForm({ positionId }: { positionId: string }) {
 
-    const action = "POST"
-    const isEditing = false
+export default function EmployeeForm({ positionId, action, employee }: EmployeeFormProp) {
 
-    const [addEmployee, { isLoading: isAdding, error }] = useAddEmployeeMutation();
+    const [addEmployee, { isLoading: isAdding, error: addError }] = useAddEmployeeMutation();
+    const [editEmployee, { isLoading: isEditing, error: editError }] = useEditEmployeeMutation();
 
 
     const {
@@ -49,34 +50,91 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
         resolver: zodResolver(EmployeeSchema),
     });
 
+    useEffect(() => {
+        if (action === "PUT") {
+            reset({
+                firstName: employee?.firstName,
+                lastName: employee?.lastName,
+                email: employee?.email,
+                phoneNumber: employee?.phoneNumber,
+                dateOfBirth: employee?.dateOfBirth ? new Date(employee?.dateOfBirth) : undefined,
+                hireDate: employee?.hireDate ? new Date(employee?.hireDate) : undefined,
+                salary: Number(employee?.salary) || undefined,
+                address: employee?.address,
+                gender: employee?.gender,
+                maritalStatus: employee?.maritalStatus,
+                emergencyContactName: employee?.emergencyContactName,
+                emergencyContactNumber: employee?.emergencyContactNumber,
+                nationalId: employee?.nationalId,
+                profilePictureUrl: employee?.profilePictureUrl,
+                role: employee?.role,
+                position: employee?.position?.id
+            })
+            console.log(typeof(employee?.salary))
+        } else {
+            reset()
+        }
+    }, [employee, action])
     const onSubmit: SubmitHandler<EmployeeSchemaType> = async (data) => {
 
-        
+    console.log(data)        
         data.firstName = data.firstName.toLowerCase()
         data.lastName = data.lastName.toLowerCase()
         data.emergencyContactName = data.emergencyContactName?.toLowerCase()
         
+        if (action === "POST") {
+            await addEmployee(data)
+        }
+        else {
+            console.log(data.salary)
+            await editEmployee({ employeeId: employee?.id, editedEmployee: data })
+        }
 
-        await addEmployee(data)
+        if (addError) {
+            let errorMsg = 'An unknown error occurred'
 
-        if (error) {
+            if ('status' in addError) {
+                if (addError?.status === 409) {
+                    errorMsg = "An employee with this email or national ID already exists.";
+                }
+            }
+            console.error(errorMsg, addError)
             return notifications.show({
                 title: 'Error',
-                message: 'Failed to add Employee. Please try again.',
+                message: `${errorMsg} Please try again.`,
                 color: 'red',
             });
         }
+
+        if (editError) {
+            let errorMsg = 'An unknown error occurred'
+
+            if ('status' in editError) {
+                if (editError?.status === 409) {
+                    errorMsg = "An employee with this email or national ID already exists.";
+                }
+            }
+            console.log(errorMsg)
+            return notifications.show({
+                title: 'Error',
+                message: `${errorMsg} Please try again.`,
+                color: 'red',
+            });
+        }
+        else if(!editError && !addError){
+            notifications.show({
+                title: `${action === "POST" ? "Register" : "Edit"} Employee`,
+                message: `Employee ${action === "POST" ? "registered" : "edited"}! 🌟`,
+            })
+        }
+
         reset()
-        notifications.show({
-            title: 'Add Employee',
-            message: 'Employee added! 🌟',
-            color: 'green'
-        })
+        
     };
 
     return (
         <Fieldset legend={action === "POST" ?
-            "Add new Employee" :
+            "Register new Employee" :
             "Make changes to the Employee info here"
         } className='w-[70vw]'>
             <form className='grid grid-cols-2 gap-5 w-full justify-center' onSubmit={handleSubmit(onSubmit)}>
@@ -127,7 +185,7 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
                                 value={value ?? undefined} error={errors.dateOfBirth?.message} />
                         )}
                     />
-                    <TextInput label="Adress" placeholder="Street Address, City, Country" {...register("address")} error={errors.address?.message}/>
+                    <TextInput label="Adress" placeholder="Street Address, City, Country" {...register("address")} error={errors.address?.message} />
                     <Controller
                         control={control}
                         name="hireDate"
@@ -137,13 +195,13 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
                         }) => (
 
                             <DateInput valueFormat="YYYY MMM DD" label="hire date" placeholder="Date input" name={name} onChange={onChange}
-                                value={value ?? undefined} error={errors.dateOfBirth?.message} />
+                                value={value ?? undefined} error={errors.hireDate?.message} />
                         )}
                     />
                 </div>
 
                 <div className='w-3/4'>
-                    
+
                     <Controller
                         control={control}
                         name="salary"
@@ -182,7 +240,7 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
                             />
                         )}
                     />
-                    <TextInput label="Emergency Contact Name" placeholder="" {...register("emergencyContactName")} error={errors.emergencyContactName?.message}/>
+                    <TextInput label="Emergency Contact Name" placeholder="" {...register("emergencyContactName")} error={errors.emergencyContactName?.message} />
                     <Controller
                         control={control}
                         name="emergencyContactNumber"
@@ -193,8 +251,8 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
                             <PhoneNumber label="Emergency contact number" name={name} onChange={onChange} value={value} error={errors.emergencyContactNumber?.message} />
                         )}
                     />
-                    <TextInput label="National Id" placeholder="" {...register("nationalId")} error={errors.nationalId?.message}/>
-                    <TextInput label="Profile Picture Url" placeholder="" {...register("profilePictureUrl")} error={errors.profilePictureUrl?.message}/>
+                    <TextInput label="National Id" placeholder="" {...register("nationalId")} error={errors.nationalId?.message} />
+                    <TextInput label="Profile Picture Url" placeholder="" {...register("profilePictureUrl")} error={errors.profilePictureUrl?.message} />
                     <Controller
                         control={control}
                         name="role"
@@ -213,9 +271,9 @@ export default function EmployeeForm({ positionId }: { positionId: string }) {
                             />
                         )}
                     />
-                <TextInput placeholder="" {...register("position")} value={positionId} hidden/>
+                    <TextInput placeholder="" {...register("position")} value={positionId} hidden />
                 </div>
-                {(isAdding || isEditing) ? <Loader size={30} className='col-span-2 w-2/4 justify-self-center' /> : <Button type="submit" className='col-span-2 w-2/4 justify-self-center'>Add</Button>}
+                {(isAdding || isEditing) ? <Loader size={30} className='col-span-2 w-2/4 justify-self-center' /> : <Button type="submit" className='col-span-2 w-2/4 justify-self-center'>{action === "PUT" ? "Edit" : "Add"}</Button>}
             </form>
         </Fieldset>
     )

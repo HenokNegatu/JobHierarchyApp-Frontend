@@ -20,11 +20,11 @@ export default function Home() {
           </p>
           <div className="mt-8 flex items-center justify-center gap-5">
 
-            <Link href="/positions" prefetch={true}>
+            <Link href="/admin/positions" prefetch={true}>
               <Button >Manage Job Positions </Button>
             </Link>
 
-            <Link href="/tasks" prefetch={true}>
+            <Link href="/admin/tasks" prefetch={true}>
               <Button>Manage Task and Employees</Button>
             </Link>
 

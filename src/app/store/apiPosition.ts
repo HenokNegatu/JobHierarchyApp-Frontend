@@ -1,8 +1,25 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getSession } from '../lib/session';
+
+const getTheSession = async ()=>{
+  const session = await getSession()
+  return session?.accessToken
+}
 
 export const positionAPI = createApi({
   reducerPath: 'productsAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api' }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: 'http://localhost:3000/api',
+    prepareHeaders: async (headers) => {
+      const token = await getTheSession()
+  
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+      }
+  
+      return headers
+    },
+   }),
   tagTypes: ["positions", "positionsById"],
   endpoints: (builder) => ({
     getPosition: builder.query({

@@ -2,7 +2,7 @@
 
 import { PanelRight } from "lucide-react"
 import { Button } from "@mantine/core"
-import PositionInfo from "../../../components/positionInfo"
+import PositionInfo from "../../../../components/positionInfo"
 import { useDrawer } from "@/app/lib/context/drawerContext"
 
 type PositionsProp = {

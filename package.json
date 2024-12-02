@@ -19,6 +19,7 @@
     "@types/ramda": "^0.30.2",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "jose": "^5.9.6",
     "lucide-react": "^0.460.0",
     "mantine-datatable": "^7.12.4",
     "next": "14.2.16",

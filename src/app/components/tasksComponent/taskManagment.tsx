@@ -163,7 +163,7 @@ export const TaskManagement = () => {
                         <EmployeeManagment />
                         <Card shadow="sm" padding="lg" radius="md" withBorder className='m-5 h-[90vh]'>
                             <div className="w-full flex gap-2 justify-center items-center h-fit">
-                                <Link href='/tasks/add'>
+                                <Link href='/admin/tasks/add'>
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
                                         Add Task
