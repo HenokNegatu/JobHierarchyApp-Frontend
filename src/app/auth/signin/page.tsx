@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn, signUp } from "@/app/auth/actions/auth";
+import { signIn } from "@/app/auth/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Fieldset, PasswordInput, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -28,18 +28,13 @@ export default function SignIn() {
     const onSubmit = async (data: FormData) => {
         const response = await signIn(data)
 
-        if (response === true) {
+        if(response){
             return notifications.show({
-                title: 'OTP',
-                message: ` OTP sent check your email.`,
-                color: 'green',
+                title: 'Error',
+                message: `${response}. Please try again.`,
+                color: 'red',
             });
         }
-        return notifications.show({
-            title: 'Error',
-            message: `${response}. Please try again.`,
-            color: 'red',
-        });
 
 
     };
@@ -63,7 +58,7 @@ export default function SignIn() {
                     />
                     <Button type="submit">Signin</Button>
                     <div className="flex items-center justify-between">
-                        <Link href="/auth/signup" className="text-gray-500">forgot password?</Link>
+                        <Link href="/auth/forgot-password" className="text-gray-500">forgot password?</Link>
                         <Link href="/auth/signup" className="underline">Signup</Link>
                     </div>
                 </form>

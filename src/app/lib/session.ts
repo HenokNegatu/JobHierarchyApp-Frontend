@@ -68,4 +68,5 @@ export async function getSession() {
 
 export async function deleteSession() {
   await cookies().delete("session");
+  redirect('/auth/signin')
 }
