@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronRight, Briefcase, Search, PlusCircle } from 'lucide-react'
+import { ChevronDown, ChevronRight, Briefcase } from 'lucide-react'
 import Link from 'next/link'
-import { Button, Input } from '@mantine/core'
+import { Button } from '@mantine/core'
 import { Position } from '../types'
 import { deleteSession } from '../lib/session'
 

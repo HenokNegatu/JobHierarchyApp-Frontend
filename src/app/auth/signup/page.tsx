@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, Fieldset } from '@mantine/core';
-import { MailOpen, ShieldCheck } from 'lucide-react';
+import { Stepper, Button, Group } from '@mantine/core';
+import { ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import OtpForm from '@/app/components/authComponents/otpForm';
 import SignUpForm from '@/app/components/authComponents/signupForm';

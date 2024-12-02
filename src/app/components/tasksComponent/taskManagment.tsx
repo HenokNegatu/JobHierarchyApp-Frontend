@@ -1,8 +1,8 @@
 'use client'
 
-import { Edit, Trash2, Plus, Filter, Clipboard, Badge, AlertCircle, } from 'lucide-react'
+import { Edit, Trash2, Plus, Filter, AlertCircle, } from 'lucide-react'
 import { TaskSummary } from './taskSummary'
-import { Button, TextInput, Text, Avatar, Group, Select, Switch } from '@mantine/core'
+import { Button, TextInput, Text, Avatar, Select, Switch } from '@mantine/core'
 import { Card } from '@mantine/core'
 import { useAssignEmployeeToTaskMutation, useGetTaskQuery, useRemoveEmployeeFromTaskMutation } from '../../store/apiTask'
 import { Employee, Task } from '../../types'

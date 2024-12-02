@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RequestType, Task, TaskStatusType } from "../../types";
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader, Text, TextInput, Button, Select, Switch, Fieldset } from "@mantine/core";
+import { Loader, TextInput, Button, Select, Switch, Fieldset } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
 

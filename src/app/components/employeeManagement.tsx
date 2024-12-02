@@ -1,7 +1,7 @@
 'use client'
 
-import { Button, Card, Select, TextInput, Text, Collapse, Box, Group } from "@mantine/core";
-import { Edit, Filter, Plus, Trash2, User, Users } from "lucide-react";
+import { Button, Card, Select, TextInput, Text, Collapse, Box } from "@mantine/core";
+import { Edit, Filter, Trash2, User, Users } from "lucide-react";
 import { useGetEmployeeQuery } from "../store/apiEmployee";
 import { Employee, StatusType, Task } from "../types";
 import { useDisclosure } from "@mantine/hooks";

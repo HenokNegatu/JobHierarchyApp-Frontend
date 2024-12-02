@@ -2,7 +2,7 @@
 
 import { Button } from '@mantine/core';
 import { useDrawer } from '../../../lib/context/drawerContext';
-import { deleteSession } from '@/app/lib/session';
+
 
 
 export default function Positions() {

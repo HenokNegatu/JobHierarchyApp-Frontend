@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { TaskManagement } from '../../../components/tasksComponent/taskManagment'
 import { Button } from '@mantine/core'
-import { deleteSession } from '@/app/lib/session'
 import LogOut from '@/app/components/authComponents/logOut'
 
 export default function TasksPage() {
