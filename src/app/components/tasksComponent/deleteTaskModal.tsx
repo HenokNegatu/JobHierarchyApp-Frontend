@@ -1,7 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, Fieldset, Modal, TextInput } from "@mantine/core";
-import { z } from "zod";
+
+import { Button, Fieldset, Modal } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDeleteTaskMutation } from "@/app/store/apiTask";
 
