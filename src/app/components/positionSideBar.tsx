@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, Briefcase, Search, PlusCircle } from 'lucide
 import Link from 'next/link'
 import { Button, Input } from '@mantine/core'
 import { Position } from '../types'
+import { deleteSession } from '../lib/session'
 
 
 const PositionItem = ({ position, level = 0 }: { position: Position; level?: number}) => {
@@ -62,6 +63,9 @@ export default function PositionSideBar({ data }: PositionSideBarProp) {
                     ))}
                 </>
             }
+            <div>
+            <Button onClick={()=>deleteSession()} className='absolute bottom-5 mx-4'>Logout</Button>
+            </div>
         </div>
     )
 }

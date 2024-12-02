@@ -57,11 +57,12 @@ export async function signIn({ email, password }: {email: string, password: stri
             redirect('/')
         }
         else{
-            redirect(`/employee-dashboard/${data.id}`)
+            
+            redirect(`/employee/employee-dashboard/${data.id}`)
         }
         
 
-        return data;
+        
     } else if (response.status === 409) {
         return "Couldn't sign in. Make sure you sign up first!";
     } 
@@ -75,4 +76,20 @@ export async function signIn({ email, password }: {email: string, password: stri
         return "An error occurred!";
     }
     
+}
+
+export async function forgotPassword({email, otp, password}:{email:string, otp:string, password: string}){
+    const response = await fetch("http://localhost:3000/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ email, otp, password }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+    
+    if (response.ok) {
+        return true;
+    } 
+    else {
+        return "An error occurred!";
+    }
+
 }

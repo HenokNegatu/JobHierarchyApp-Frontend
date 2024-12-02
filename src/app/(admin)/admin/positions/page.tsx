@@ -2,6 +2,7 @@
 
 import { Button } from '@mantine/core';
 import { useDrawer } from '../../../lib/context/drawerContext';
+import { deleteSession } from '@/app/lib/session';
 
 
 export default function Positions() {
@@ -12,6 +13,7 @@ export default function Positions() {
       <div className='w-screen h-screen flex flex-col items-center justify-center'>
         <h1>select position to view</h1>
         <Button onClick={open}>Open Drawer</Button>   
+        
       </div>
     )
 }
