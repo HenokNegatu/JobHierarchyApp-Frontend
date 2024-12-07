@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const formSchema = z.object({
     email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters long")
+    password: z.string()
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -51,7 +51,6 @@ export default function SignIn() {
                     />
                     <PasswordInput
                         label="Password"
-                        description="Use at least 8 characters with a mix of letters, numbers & symbols."
                         placeholder="Secure password"
                         {...register("password")}
                         error={errors.password?.message}
