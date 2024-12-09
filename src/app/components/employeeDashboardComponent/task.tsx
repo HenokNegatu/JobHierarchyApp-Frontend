@@ -86,7 +86,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
                                 control={control}
                                 name="status"
                                 render={({
-                                    field: { onChange, onBlur, value, name, ref },
+                                    field: { onChange, value, name },
 
                                 }) => (
                                     <Select

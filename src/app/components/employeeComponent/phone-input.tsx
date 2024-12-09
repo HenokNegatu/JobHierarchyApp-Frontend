@@ -12,7 +12,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { ChevronDown } from "lucide-react";
-import { map, pick, compose, prop, toLower, uniqBy, head } from "rambda";
+import { map, pick, compose, prop, toLower, uniqBy } from "rambda";
 import "react-international-phone/style.css";
 import {
   CountryIso2,

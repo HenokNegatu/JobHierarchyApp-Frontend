@@ -43,15 +43,12 @@ type PositionSideBarProp = {
 }
 
 export default function PositionSideBar({ data }: PositionSideBarProp) {
-    const [showTasks, setShowTasks] = useState(false)
 
     return (
         <div className="py-4">
             <div className="px-4 mb-4">
                 <Link href='/admin/tasks' prefetch={true}>
-                    <Button className="w-full mb-2">
-                        {showTasks ? "Show Job Positions" : "Show Tasks"}
-                    </Button>
+                    <Button className="w-full mb-2">Show Tasks</Button>
                 </Link>
 
             </div>

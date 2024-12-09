@@ -34,7 +34,7 @@ export default function TaskForm({ action, task }: TaskFormProp) {
     const [addTask, { isLoading: isAdding, error: addError }] = useAddTaskMutation();
     const [editTask, { isLoading: isEditing, error: editError }] = useEditTaskMutation();
 
-    const [priority, setPriority] = useState({priority: task?.isPriority || false})
+    const [priority] = useState({priority: task?.isPriority || false})
 
     const {
         register,
@@ -126,7 +126,7 @@ export default function TaskForm({ action, task }: TaskFormProp) {
                         control={control}
                         name="dueDate"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
 

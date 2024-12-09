@@ -1,4 +1,4 @@
-import { ClipboardX, PanelLeft, UserX2 } from 'lucide-react';
+import { ClipboardX, UserX2 } from 'lucide-react';
 import { Edit, Trash2, UserPlus, PlusCircle } from 'lucide-react'
 import { Button, Avatar, TextInput, Text } from '@mantine/core'
 import { Card } from '@mantine/core'
@@ -47,7 +47,6 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
     const [opened, { toggle }] = useDisclosure(false);
     const [openedModal, { open, close }] = useDisclosure(false);
     const [action, setAction] = useState(RequestType.POST)
-    const [selectedPosition, setPosition] = useState<Position>(position)
 
     const showModal = (actionType: RequestType, position: Position) => {
         if (position.name === "CEO" && (actionType === "PUT" || actionType === "DELETE")) {
@@ -59,7 +58,6 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
             return
         }
         setAction(actionType)
-        setPosition(position)
         open()
     }
 
@@ -218,7 +216,7 @@ export default function PositionInfo({ positionId }: PositionInfoProps) {
                                                                     {
                                                                         employee.task.map((task: Task) => {
                                                                             return (
-                                                                                <div className="flex justify-around items-center p-2 mb-2 bg-gray-100 rounded mt-2">
+                                                                                <div className="flex justify-around items-center p-2 mb-2 bg-gray-100 rounded mt-2" key={task.id}>
                                                                                     <Text>{task.title}</Text>
                                                                                     <span className={`px-2 py-1 rounded-full text-sm ${task.status === 'Todo' ? 'bg-yellow-200 text-yellow-800' :
                                                                                         task.status === 'In Progress' ?

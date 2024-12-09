@@ -1,6 +1,6 @@
 'use client'
 
-import { DrawerProvider, useDrawer } from "../../../lib/context/drawerContext";
+import { DrawerProvider } from "../../../lib/context/drawerContext";
 
 export default function PositionsLayout({
     children, 
