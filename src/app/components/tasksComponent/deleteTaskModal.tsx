@@ -1,5 +1,5 @@
 
-import { Button, Fieldset, Modal } from "@mantine/core";
+import { Button, Fieldset, Loader, Modal } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDeleteTaskMutation } from "@/app/store/apiTask";
 
@@ -31,7 +31,7 @@ export default function DeleteTaskModal({ taskId, taskTitle, close, opened }: { 
         <div>
             <Modal opened={opened} onClose={close} title={`delete ${taskTitle}`}centered>
                 <Fieldset legend={`are you sure you want to delete ${taskTitle}`}>
-                    <Button onClick={() => onSubmit(taskId)}>Delete</Button>
+                    {isDeleting ? <Loader /> : <Button onClick={() => onSubmit(taskId)}>Yes</Button>}
                 </Fieldset>
             </Modal>
         </div>

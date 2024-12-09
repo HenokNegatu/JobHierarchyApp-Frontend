@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, Tabs } from '@mantine/core';
-import { User2, ClipboardCheck, LogOut } from 'lucide-react';
+import { User2, ClipboardCheck } from 'lucide-react';
 import { Employee } from '../../types';
 import Profile from './profile';
 import TaskSection from './task';

@@ -28,7 +28,8 @@ export async function signUp({ email, otp, password }: {email: string, otp: stri
             body: JSON.stringify({ email, otp, password }),
             headers: { 'Content-Type': 'application/json' }
         })
-        return true
+        if(response.ok) return true
+        else{ return "couldn't sign up make sure your registered!" }
     } catch (error) {
         return "couldn't sign up make sure your registered!"
     }

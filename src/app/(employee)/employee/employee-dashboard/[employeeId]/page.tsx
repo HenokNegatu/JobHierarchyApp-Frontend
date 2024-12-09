@@ -6,6 +6,11 @@ import { Loader } from "@mantine/core";
 
 export default function EmployeeDashboard({ params }: { params: { employeeId: string } }) {
     const {data: EmployeeWithTask, isLoading, error } = useGetEmployeeWithTaskQuery(params.employeeId)
+
+    if (error) {
+        return <p>faild to load data from server :(</p>
+    }
+
     return (
         <div>
             {isLoading ? (

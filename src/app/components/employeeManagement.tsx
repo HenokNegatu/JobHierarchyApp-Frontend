@@ -91,6 +91,10 @@ const EmployeeBar = ({ employee }: EmployeeProps) => {
 export default function EmployeeManagment() {
 
     const { data: employees, error, isLoading } = useGetEmployeeQuery({})
+    
+    if(error){
+        return <p>faild to load data from server :(</p>
+    }
 
     const [filterName, setFilterName] = useState('');
     const [filterPosition, setFilterPosition] = useState('');

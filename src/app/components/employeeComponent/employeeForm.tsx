@@ -1,5 +1,5 @@
-import { employeeAPI, useAddEmployeeMutation, useEditEmployeeMutation } from '@/app/store/apiEmployee';
-import { Employee, GenderType, MaritalStatusType, RequestType, Role, StatusType } from '@/app/types';
+import { useAddEmployeeMutation, useEditEmployeeMutation } from '@/app/store/apiEmployee';
+import { Employee, GenderType, MaritalStatusType, RequestType, Role } from '@/app/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Fieldset, Loader, NumberInput, Select, TextInput } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
@@ -149,7 +149,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="phoneNumber"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
                             <PhoneNumber label="Phone number " name={name} onChange={onChange} value={value} error={errors.phoneNumber?.message} />
@@ -159,7 +159,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="gender"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
                             <Select
@@ -177,7 +177,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="dateOfBirth"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
 
@@ -190,7 +190,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="hireDate"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
 
@@ -206,7 +206,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="salary"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
 
@@ -225,7 +225,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="maritalStatus"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
 
@@ -245,7 +245,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="emergencyContactNumber"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
                             <PhoneNumber label="Emergency contact number" name={name} onChange={onChange} value={value} error={errors.emergencyContactNumber?.message} />
@@ -257,7 +257,7 @@ export default function EmployeeForm({ positionId, action, employee }: EmployeeF
                         control={control}
                         name="role"
                         render={({
-                            field: { onChange, onBlur, value, name, ref },
+                            field: { onChange, value, name },
 
                         }) => (
                             <Select
