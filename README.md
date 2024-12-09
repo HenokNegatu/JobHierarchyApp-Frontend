@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Hierarchy Web App
 
-## Getting Started
+Welcome to the **Job Hierarchy Web App**, a platform designed to manage organizational job positions and employees efficiently. This README provides step-by-step instructions for first-time setup and usage.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+- Manage job positions and employees in a hierarchical structure.
+- Admin can register employees and track their status.
+- Employees can complete their registration securely.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## First-Time Setup (Admin)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Set the Admin Email:**
+   - Ensure the environment variable `ADMIN_SETUP_EMAIL` is set to a valid email address before starting the app.
+   - Example:
+     ```env
+     ADMIN_SETUP_EMAIL=admin@example.com
+     ```
 
-## Learn More
+2. **Start the Application:**
+   - Run the application using the appropriate command for your setup (e.g., Docker, Node.js, etc.).
 
-To learn more about Next.js, take a look at the following resources:
+3. **Admin Signup:**
+   - Navigate to the `/auth/signup` route in your browser or API client.
+   - Use the email specified in `ADMIN_SETUP_EMAIL` to create an admin account.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Edit Dummy Information:**
+   - Log in to the application and replace any placeholder data with accurate organizational details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Employee Registration Process
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Admin Registers Employees:**
+   - Admin must pre-register employees within the app by providing their email addresses.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Employee Signup:**
+   - Employees receive their registered email details from the admin.
+   - Navigate to the `/auth/signup` route.
+   - Use the registered email to create a password and complete the signup process.
+
+3. **Employee Status Updates:**
+   - Once the employee successfully completes their signup:
+     - The employee's status changes from **red (pending)** to **green (active)** in the admin's dashboard.
+
+---
+
+## Notes
+- Ensure the `ADMIN_SETUP_EMAIL` is valid, as it is critical for admin account creation.
+- Only emails pre-registered by the admin can be used by employees for signup.
+- Monitor employee statuses to track registration progress.
+
+---
+
