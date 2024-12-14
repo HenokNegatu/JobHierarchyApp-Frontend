@@ -1,25 +1,26 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getSession } from '../lib/session';
 
-const getTheSession = async ()=>{
+const getTheSession = async () => {
     const session = await getSession()
     return session?.accessToken
-  }
+}
+
 
 export const taskAPI = createApi({
     reducerPath: 'taskAPI',
-    baseQuery: fetchBaseQuery({ 
-        baseUrl: 'http://localhost:3000/api',
+    baseQuery: fetchBaseQuery({
+        baseUrl: `http://localhost:3000/api`,
         prepareHeaders: async (headers) => {
             const token = await getTheSession()
-        
+
             if (token) {
-              headers.set('authorization', `Bearer ${token}`)
+                headers.set('authorization', `Bearer ${token}`)
             }
-            
+
             return headers
-          },
-     }),
+        },
+    }),
     tagTypes: ["tasks"],
     endpoints: (builder) => ({
         getTask: builder.query({
@@ -38,7 +39,7 @@ export const taskAPI = createApi({
             invalidatesTags: ["tasks"]
         }),
         editTask: builder.mutation({
-            query: ({taskId, editedTask}) => ({
+            query: ({ taskId, editedTask }) => ({
                 url: `task/${taskId}`,
                 method: 'PUT',
                 body: editedTask,

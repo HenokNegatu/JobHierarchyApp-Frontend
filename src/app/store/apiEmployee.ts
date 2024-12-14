@@ -10,7 +10,7 @@ const getTheSession = async ()=>{
 export const employeeAPI = createApi({
     reducerPath: 'employeeAPI',
     baseQuery: fetchBaseQuery({
-         baseUrl: 'http://localhost:3000/api',
+         baseUrl: `http://localhost:3000/api`,
          prepareHeaders: async (headers) => {
             const token = await getTheSession()
         
