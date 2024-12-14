@@ -6,13 +6,11 @@ const getTheSession = async ()=>{
   return session?.accessToken
 }
 
-const backend_url = `${process.env.NEXT_PUBLIC_API_BASE_URL}api`
-console.log(backend_url)
 
 export const positionAPI = createApi({
   reducerPath: 'productsAPI',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: backend_url,
+    baseUrl: `http://localhost:3000/api`,
     prepareHeaders: async (headers) => {
       const token = await getTheSession()
   

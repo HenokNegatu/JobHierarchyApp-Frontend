@@ -4,6 +4,7 @@ import { createSession } from "@/app/lib/session"
 import { redirect } from "next/navigation"
 
 const backend_url = process.env.NEXT_PUBLIC_API_BASE_URL;
+console.log(backend_url)
 
 export async function sendOtp(email: string) {
     try {
