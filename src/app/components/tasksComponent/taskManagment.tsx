@@ -136,9 +136,9 @@ export const TaskManagement = () => {
 
     const { data: tasks, error, isLoading } = useGetTaskQuery({})
 
-    if(error){
-        return <p>faild to load data from server :(</p>
-    }
+    // if(error){
+    //     return <p>faild to load data from server :(</p>
+    // }
 
 
     const [filterTitle, setFilterTitle] = useState('');

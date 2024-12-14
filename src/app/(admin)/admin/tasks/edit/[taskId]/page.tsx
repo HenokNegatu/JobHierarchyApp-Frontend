@@ -13,9 +13,9 @@ type EditPageProp = {
 
 export default function EditPage({params}: EditPageProp){
     const {data: Task, error, isLoading} = useGetTaskByIdQuery(params.taskId)
-    if (error) {
-        return <p>faild to load data from server :(</p>
-    }
+    // if (error) {
+    //     return <p>faild to load data from server :(</p>
+    // }
     return(
         <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
             <Button variant='light' onClick={() => window.history.back()} className="absolute top-5 left-5">Back</Button>

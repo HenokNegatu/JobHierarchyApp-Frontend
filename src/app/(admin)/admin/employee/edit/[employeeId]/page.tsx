@@ -9,9 +9,9 @@ export default function EditEmployeePage({ params }: { params: { employeeId: str
 
     const { data: Employee, error, isLoading } = useGetEmployeeWithTaskQuery(params.employeeId)
     
-    if (error) {
-        return <p>faild to load data from server :(</p>
-    }
+    // if (error) {
+    //     return <p>faild to load data from server :(</p>
+    // }
 
     return (
         <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
